@@ -1,0 +1,2 @@
+# andmestikud_sjuh.andmeteadus_25
+Sissejuhatus andmeteadustesse_projekt
