@@ -2,9 +2,9 @@
 Sissejuhatus andmeteadustesse_projekt
 
 **Projekti üldeesmärgid:**
-1. analüüsida väikelaste vaktsineeritust maakondade kaupa riiklikusse vaktsineerimiskavasse kuuluvate haiguste vastu
-2. analüüsida erinevatesse vaktsiinvälditavatesse haigustesse nakatumist maakondade kaupa 
-3. leida seoseid väikelaste vaktsineerimise ja haigustesse nakatumiste vahel 
+1. Analüüsida väikelaste vaktsineeritust maakondade kaupa riiklikusse vaktsineerimiskavasse kuuluvate haiguste vastu
+2. Analüüsida erinevatesse vaktsiinvälditavatesse haigustesse nakatumist maakondade kaupa 
+3. Leida seoseid väikelaste vaktsineerimise ja haigustesse nakatumiste vahel 
 4. Visualiseerida leitud seoseid (nii Eesti kaardil kui kasutades erinevaid graafikuid)
 5. Luua visualiseeringutest töölaud
 6. Teha järeldusi seostest ja tuua välja erinevaid meditsiinilisi, bioloogilisi, demograafilisi jt põhjuseid 
@@ -21,3 +21,4 @@ Sissejuhatus andmeteadustesse_projekt
 Tehtud toimingutest tekib dokumentatsioon logi README.md faili näol, kus iga sissekande järel on kirjas aeg (kellaaja täpsusega)
 
 Projektis kasutatavad vahendid: **VSCode**, **Google Colab** koos vajalike teekidega jupyter notebooki jaoks, **streamlit.io** töölauarakenduse jaoks
+Projekti tulemina tekib töölauarakendus Streamlit.io keskkonnas ja jupyter notebook
