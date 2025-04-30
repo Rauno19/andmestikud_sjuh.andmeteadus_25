@@ -1,4 +1,21 @@
 # andmestikud_sjuh.andmeteadus_25
 Sissejuhatus andmeteadustesse_projekt
 
-Üles laetud kaks andmestiku_valikut (sporidalad ja üldhariduskoolide õppurite statistika)
+**Projekti üldeesmärgid:**
+1. analüüsida väikelaste vaktsineeritust maakondade kaupa riiklikusse vaktsineerimiskavasse kuuluvate haiguste vastu
+2. analüüsida erinevatesse vaktsiinvälditavatesse haigustesse nakatumist maakondade kaupa 
+3. leida seoseid väikelaste vaktsineerimise ja haigustesse nakatumiste vahel 
+4. Visualiseerida leitud seoseid (nii Eesti kaardil kui kasutades erinevaid graafikuid)
+5. Luua visualiseeringutest töölaud
+6. Teha järeldusi seostest ja tuua välja erinevaid meditsiinilisi, bioloogilisi, demograafilisi jt põhjuseid 
+
+**Projekti põhilised etapid:**
+1. Andmete leidmine 
+2. Andmete puhastamine jm töötlemine
+3. Andmete analüüsimine põhilisemate kirjeldava statistika meetmetega
+4. Seoste olemasolu kontrollimine ja leidmisel statistiliste meetodite rakendamine  
+5. Visuaalide loomine
+6. Töölaua rakenduse loomine
+7. Projektist kokkuvõtete tegemine
+
+Tehtud toimingutest tekib dokumentatsioon logi README.md faili näol, kus iga sissekande järel on kirjas aeg (kellaaja täpsusega)
