@@ -23,6 +23,6 @@ Tehtud toimingutest tekib dokumentatsioon logi README.md faili näol, kus iga si
 Projektis kasutatavad vahendid: **VSCode**, **Google Colab** koos vajalike teekidega jupyter notebooki jaoks, **streamlit.io** töölauarakenduse jaoks
 Projekti tulemina tekib töölauarakendus Streamlit.io keskkonnas ja jupyter notebook
 
-**Lisatud andmestik 2-aastaste laste immuniseerimisega hõlmatuse haiguse ja maakonna(%) järgi.xlxs**- Vaktsineerimisandmestik
-**Lisatud andmestik Haigused.xlsx**- Haiguste esinemise andmestik
+**Lisatud korrastatud andmestik 2-aastaste laste immuniseerimisega hõlmatuse haiguse ja maakonna(%) järgi.xlxs**- Vaktsineerimisandmestik
+**Lisatud korrastatud andmestik Haigused.xlsx**- Haiguste esinemise andmestik
 **uuendatud readme.md ja andmestikud_info.md** (30.04 kell 11:54)
