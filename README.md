@@ -19,3 +19,5 @@ Sissejuhatus andmeteadustesse_projekt
 7. Projektist kokkuvõtete tegemine
 
 Tehtud toimingutest tekib dokumentatsioon logi README.md faili näol, kus iga sissekande järel on kirjas aeg (kellaaja täpsusega)
+
+Projektis kasutatavad vahendid: **VSCode**, **Google Colab** koos vajalike teekidega jupyter notebooki jaoks, **streamlit.io** töölauarakenduse jaoks
