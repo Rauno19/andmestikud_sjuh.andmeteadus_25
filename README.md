@@ -1,5 +1,5 @@
 # andmestikud_sjuh.andmeteadus_25
-Sissejuhatus andmeteadustesse_projekt
+Sissejuhatus andmeteadustesse_projekt.
 
 **Projekti üldeesmärgid:**
 1. Analüüsida väikelaste vaktsineeritust maakondade kaupa riiklikusse vaktsineerimiskavasse kuuluvate haiguste vastu
