@@ -26,3 +26,4 @@ Projekti tulemina tekib töölauarakendus Streamlit.io keskkonnas ja jupyter not
 **Lisatud korrastatud andmestik 2-aastaste laste immuniseerimisega hõlmatuse haiguse ja maakonna(%) järgi.xlxs**- Vaktsineerimisandmestik
 **Lisatud korrastatud andmestik Haigused.xlsx**- Haiguste esinemise andmestik
 **uuendatud readme.md ja andmestikud_info.md** (30.04 kell 11:54)
+**Lisatud korrastatud ja täiendatud andmestik haiguste kohta. Pythoni esialgne koodi katsetus 5.05
