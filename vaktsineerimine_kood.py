@@ -8,11 +8,11 @@ vakts_df = pd.read_excel("andmestikud/vaktsineerimine.xlsx")
 haigused_df = pd.read_excel("andmestikud/Haigused.xlsx")
 maakond_gdf = gpd.read_file("andmestikud/maakond.json")
 
-# --- PUHASTA VEERUNIMED ---
+# --- VEERUNIMEDE PUHASTUS ---
 vakts_df.columns = vakts_df.columns.str.strip().str.replace("\xa0", "", regex=False)
 haigused_df.columns = haigused_df.columns.str.strip().str.replace("\xa0", "", regex=False)
 
-# --- ETTEVALMISTUS ---
+# --- ANDMETE ETTEVALMISTUS ---
 vakts_df["Maakond"] = vakts_df["Maakond"].str.strip()
 haigused_df["Maakond"] = haigused_df["Maakond"].str.strip()
 
@@ -23,15 +23,18 @@ aastad = sorted(vakts_df["Aasta"].dropna().unique().astype(int))
 maakond_gdf["NIMI"] = maakond_gdf["MNIMI"].str.strip()
 combined_gdf = maakond_gdf.copy()
 
-# --- LEIA ÜHISED HAIUSED JA ANDMETE OLEMASOLU ---
+# --- HAIUSTE TÄIDETUSE TABEL ---
 haigused_kandidaadid = sorted(set(vakts_df.columns).intersection(haigused_df.columns) - {"Aasta", "Maakond"})
 
-# Kontrolltabel
 kontroll_df = pd.DataFrame(columns=["Haigus", "Vaktsineerimine (täidetud)", "Haigestumine (täidetud)"])
 for haigus in haigused_kandidaadid:
     vakts_count = vakts_df[haigus].dropna().shape[0]
     haigus_count = haigused_df[haigus].dropna().shape[0]
     kontroll_df.loc[len(kontroll_df)] = [haigus, vakts_count, haigus_count]
+
+# --- KUVA TÄIDETUSE TABEL ---
+st.subheader("🧪 Andmetabelite täidetus haiguste lõikes")
+st.dataframe(kontroll_df.sort_values("Haigus"))
 
 # --- FILTREERI AINULT HAIUSED, MILLEL ON ANDMED ---
 haigused = kontroll_df[
@@ -39,11 +42,7 @@ haigused = kontroll_df[
     (kontroll_df["Haigestumine (täidetud)"] > 0)
 ]["Haigus"].tolist()
 
-# --- KUVA TÄIDETUSE TABEL ---
-st.subheader("🧪 Andmetabelite täidetus haiguste lõikes")
-st.dataframe(kontroll_df.sort_values("Haigus"))
-
-# --- VALIKUD ---
+# --- VALIKUD (NB! pärast haiguste määramist) ---
 valitud_aasta = st.sidebar.selectbox("Vali aasta", aastad)
 valitud_haigus = st.sidebar.selectbox("Vali haigus", haigused)
 
