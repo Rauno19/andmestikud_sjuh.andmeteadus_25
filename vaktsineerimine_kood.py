@@ -85,4 +85,17 @@ geo_merged.plot(
 axes[1].set_title("Haigestumus")
 axes[1].axis("off")
 
-st.p
+st.pyplot(fig)
+
+# --- KUVA EESTI KOKKU ---
+st.subheader("🌐 Kogu Eesti kohta")
+
+try:
+    vakts_eesti = vakts_df.query("Aasta == @valitud_aasta and Maakond == 'Eesti kokku'")[valitud_haigus].values[0]
+    haigus_eesti = haigused_df.query("Aasta == @valitud_aasta and Maakond == 'Eesti kokku'")[valitud_haigus].values[0]
+except IndexError:
+    vakts_eesti = haigus_eesti = None
+
+col1, col2 = st.columns(2)
+col1.metric("Vaktsineerimise määr (%)", f"{vakts_eesti}" if vakts_eesti is not None else "–")
+col2.metric("Haigestunute arv", f"{int(haigus_eesti)}" if haigus_eesti is not None else "–")
