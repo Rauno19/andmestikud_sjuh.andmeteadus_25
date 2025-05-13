@@ -77,7 +77,7 @@ axes[1].axis("off")
 
 st.pyplot(fig)
 
-# --- KOKKU EESTI KOHTA ---
+# --- KOKKUVÕTE EESTI KOHTA ---
 st.subheader("🌍 Kogu Eesti kohta")
 
 try:
@@ -89,3 +89,6 @@ except IndexError:
 col1, col2 = st.columns(2)
 col1.metric("Vaktsineerimise määr (%)", f"{vakts_eesti}" if vakts_eesti else "–")
 col2.metric("Haigestunute arv", f"{int(haigus_eesti)}" if haigus_eesti else "–")
+
+# --- DEBUG: KUVA HAIUSTE NIMEKIRI ---
+st.write("👉 Valikus olevad haigused:", haigused)
