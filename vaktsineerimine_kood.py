@@ -4,10 +4,10 @@ import geopandas as gpd
 import matplotlib.pyplot as plt
 
 # --- LAE ANDMED ---
-vakts_df = pd.read_excel("vaktsineerimine.xlsx")
-haigused_df = pd.read_excel("Haigused.xlsx")
-maakond_gdf = gpd.read_file("EHAK/geojson/maakond.json")
-asustus_gdf = gpd.read_file("EHAK/geojson/asustusyksus.json")
+vakts_df = pd.read_excel("andmestikud/vaktsineerimine.xlsx")
+haigused_df = pd.read_excel("andmestikud/Haigused.xlsx")
+maakond_gdf = gpd.read_file("andmestikud/maakond.json")
+#asustus_gdf = gpd.read_file("andmestikud/asustusyksus.json")
 
 # --- ANDMETE ETTEVALMISTUS ---
 vakts_df.columns = vakts_df.columns.str.strip()
