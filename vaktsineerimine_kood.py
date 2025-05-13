@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 # --- LAE ANDMED ---
 vakts_df = pd.read_excel("vaktsineerimine.xlsx")
 haigused_df = pd.read_excel("Haigused.xlsx")
-maakond_gdf = gpd.read_file("EHAK/geojson/maakond.json")
-asustus_gdf = gpd.read_file("EHAK/geojson/asustusyksus.json")
+maakond_gdf = gpd.read_file("EHAK/geojson/maakond.geojson")
+asustus_gdf = gpd.read_file("EHAK/geojson/asustusyksus.geojson")
 
 # --- ANDMETE ETTEVALMISTUS ---
 vakts_df.columns = vakts_df.columns.str.strip()
