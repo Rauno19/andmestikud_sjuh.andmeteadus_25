@@ -44,7 +44,7 @@ st.dataframe(kontroll_df.sort_values("Haigus"))
 
 # --- VAJADUSEL LAE UUENDATUD VALIKUD ---
 if st.button("🔁 Laadi haiguste valikud uuesti"):
-    st.experimental_rerun()
+    st.rerun()
 
 # --- VALIKUD (peavad tulema pärast haigused määramist) ---
 valitud_aasta = st.sidebar.selectbox("Vali aasta", aastad)
