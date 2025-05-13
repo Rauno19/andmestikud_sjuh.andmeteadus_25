@@ -8,10 +8,11 @@ vakts_df = pd.read_excel("andmestikud/vaktsineerimine.xlsx")
 haigused_df = pd.read_excel("andmestikud/Haigused.xlsx")
 maakond_gdf = gpd.read_file("andmestikud/maakond.json")
 
-# --- ANDMETE ETTEVALMISTUS ---
-vakts_df.columns = vakts_df.columns.str.strip()
-haigused_df.columns = haigused_df.columns.str.strip()
+# --- VEERUNIMEDE PUHASTUS ---
+vakts_df.columns = vakts_df.columns.str.strip().str.replace("\xa0", "", regex=False)
+haigused_df.columns = haigused_df.columns.str.strip().str.replace("\xa0", "", regex=False)
 
+# --- ANDMETE ETTEVALMISTUS ---
 vakts_df["Maakond"] = vakts_df["Maakond"].str.strip()
 haigused_df["Maakond"] = haigused_df["Maakond"].str.strip()
 
@@ -29,7 +30,7 @@ maakonnad = sorted(
 )
 maakonna_valikud = [m for m in maakonnad if m != "Eesti kokku"]
 
-# ✅ Ainult veerud, mis on mõlemas tabelis
+# ✅ Ainult veerud, mis on mõlemas olemas
 haigused = sorted(
     set(vakts_df.columns).intersection(haigused_df.columns) - {"Aasta", "Maakond"}
 )
