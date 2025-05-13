@@ -36,13 +36,13 @@ for haigus in haigused_kandidaadid:
 st.subheader("🧪 Andmetabelite täidetus haiguste lõikes")
 st.dataframe(kontroll_df.sort_values("Haigus"))
 
-# --- FILTREERI AINULT HAIUSED, MILLEL ON ANDMED ---
+# --- FILTREERI HAIUSED, MILLEL ON ANDMED ---
 haigused = kontroll_df[
     (kontroll_df["Vaktsineerimine (täidetud)"] > 0) &
     (kontroll_df["Haigestumine (täidetud)"] > 0)
 ]["Haigus"].tolist()
 
-# --- VALIKUD (NB! pärast haiguste määramist) ---
+# --- VALIKUD (PEAB TULEMA PÄRAST haigused määramist) ---
 valitud_aasta = st.sidebar.selectbox("Vali aasta", aastad)
 valitud_haigus = st.sidebar.selectbox("Vali haigus", haigused)
 
