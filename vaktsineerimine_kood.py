@@ -35,6 +35,18 @@ haigused = sorted(
     set(vakts_df.columns).intersection(haigused_df.columns) - {"Aasta", "Maakond"}
 )
 
+# --- 🧪 ANDMETE OLEMASOLU TABEL ---
+st.subheader("🧪 Andmetabelite täidetus haiguste lõikes")
+
+kontroll_df = pd.DataFrame(columns=["Haigus", "Vaktsineerimine (täidetud)", "Haigestumine (täidetud)"])
+for haigus in haigused:
+    vakts_count = vakts_df[haigus].dropna().shape[0]
+    haigus_count = haigused_df[haigus].dropna().shape[0]
+    kontroll_df.loc[len(kontroll_df)] = [haigus, vakts_count, haigus_count]
+
+st.dataframe(kontroll_df.sort_values("Haigus"))
+
+# --- VALIKUD ---
 valitud_aasta = st.sidebar.selectbox("Vali aasta", aastad)
 valitud_haigus = st.sidebar.selectbox("Vali haigus", haigused)
 
