@@ -25,6 +25,7 @@ maakond_gdf["NIMI"] = maakond_gdf["MNIMI"].str.strip()
 combined_gdf = maakond_gdf.copy()
 
 # --- VALIKUD ---
+vakts_df["Aasta"] = vakts_df["Aasta"].astype(int)
 aastad = sorted(vakts_df["Aasta"].dropna().unique())
 maakonnad = sorted(set(vakts_df["Maakond"]).union(haigused_df["Maakond"]))
 maakonna_valikud = [m for m in maakonnad if m != "Eesti kokku"]
