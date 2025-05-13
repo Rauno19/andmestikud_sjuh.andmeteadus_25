@@ -15,16 +15,16 @@ haigused_df.columns = haigused_df.columns.str.strip()
 vakts_df["Maakond"] = vakts_df["Maakond"].str.strip()
 haigused_df["Maakond"] = haigused_df["Maakond"].str.strip()
 
-# --- AASTA TÖÖTLUS ---
 vakts_df["Aasta"] = pd.to_numeric(vakts_df["Aasta"], errors="coerce")
 haigused_df["Aasta"] = pd.to_numeric(haigused_df["Aasta"], errors="coerce")
 
 aastad = sorted(vakts_df["Aasta"].dropna().unique().astype(int))
+
 maakond_gdf["NIMI"] = maakond_gdf["MNIMI"].str.strip()
 combined_gdf = maakond_gdf.copy()
 
 # --- VALIKUD ---
-maakonnad = sorted(set(vakts_df["Maakond"]).union(haigused_df["Maakond"]))
+maakonnad = sorted(set(vakts_df["Maakond"]).union(set(haigused_df["Maakond"])))
 maakonna_valikud = [m for m in maakonnad if m != "Eesti kokku"]
 haigused = [col for col in vakts_df.columns if col not in ["Aasta", "Maakond"]]
 
