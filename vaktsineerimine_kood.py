@@ -17,9 +17,12 @@ vakts_df["Maakond"] = vakts_df["Maakond"].str.strip()
 haigused_df["Maakond"] = haigused_df["Maakond"].str.strip()
 
 # Lisa Tallinn ja Narva kaardile
-cities_gdf = asustus_gdf[asustus_gdf["ONIMI"].isin(["Tallinn", "Narva"])]
-combined_gdf = pd.concat([maakond_gdf, cities_gdf], ignore_index=True)
-combined_gdf["NIMI"] = combined_gdf["MNIMI"].fillna(combined_gdf["ONIMI"]).str.strip()
+#cities_gdf = asustus_gdf[asustus_gdf["ONIMI"].isin(["Tallinn", "Narva"])]
+#combined_gdf = pd.concat([maakond_gdf, cities_gdf], ignore_index=True)
+#combined_gdf["NIMI"] = combined_gdf["MNIMI"].fillna(combined_gdf["ONIMI"]).str.strip()
+
+maakond_gdf["NIMI"] = maakond_gdf["MNIMI"].str.strip()
+combined_gdf = maakond_gdf.copy()
 
 # --- VALIKUD ---
 aastad = sorted(vakts_df["Aasta"].dropna().unique())
