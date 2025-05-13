@@ -7,4 +7,4 @@ pyproj
 shapely
 fiona
 rtree
-penpyxl
+openpyxl
