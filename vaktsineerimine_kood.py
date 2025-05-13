@@ -49,7 +49,7 @@ if st.button("🔁 Laadi haiguste valikud uuesti"):
 # --- VALIKUD (peavad tulema pärast haigused määramist) ---
 valitud_aasta = st.sidebar.selectbox("Vali aasta", aastad)
 valitud_haigus = st.sidebar.selectbox("Vali haigus", haigused)
-
+st.write("👉 Haigused valikus:", haigused)
 # --- FILTERDA ANDMED ---
 vakts_filtered = vakts_df[
     (vakts_df["Aasta"] == valitud_aasta) & (vakts_df["Maakond"] != "Eesti kokku")
