@@ -32,17 +32,21 @@ for haigus in haigused_kandidaadid:
     haigus_count = haigused_df[haigus].dropna().shape[0]
     kontroll_df.loc[len(kontroll_df)] = [haigus, vakts_count, haigus_count]
 
-# --- KUVA TÄIDETUSE TABEL ---
-st.subheader("🧪 Andmetabelite täidetus haiguste lõikes")
-st.dataframe(kontroll_df.sort_values("Haigus"))
-
-# --- FILTREERI HAIUSED, MILLEL ON ANDMED ---
+# --- LAADI UUENDATUD HAIUSED
 haigused = kontroll_df[
     (kontroll_df["Vaktsineerimine (täidetud)"] > 0) &
     (kontroll_df["Haigestumine (täidetud)"] > 0)
 ]["Haigus"].tolist()
 
-# --- VALIKUD (PEAB TULEMA PÄRAST haigused määramist) ---
+# --- KUVA TÄIDETUSE TABEL ---
+st.subheader("🧪 Andmetabelite täidetus haiguste lõikes")
+st.dataframe(kontroll_df.sort_values("Haigus"))
+
+# --- VAJADUSEL LAE UUENDATUD VALIKUD ---
+if st.button("🔁 Laadi haiguste valikud uuesti"):
+    st.experimental_rerun()
+
+# --- VALIKUD (peavad tulema pärast haigused määramist) ---
 valitud_aasta = st.sidebar.selectbox("Vali aasta", aastad)
 valitud_haigus = st.sidebar.selectbox("Vali haigus", haigused)
 
