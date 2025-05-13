@@ -8,11 +8,11 @@ vakts_df = pd.read_excel("andmestikud/vaktsineerimine.xlsx")
 haigused_df = pd.read_excel("andmestikud/Haigused.xlsx")
 maakond_gdf = gpd.read_file("andmestikud/maakond.json")
 
-# --- VEERUNIMEDE PUHASTUS ---
+# --- PUHASTA VEERUNIMED ---
 vakts_df.columns = vakts_df.columns.str.strip().str.replace("\xa0", "", regex=False)
 haigused_df.columns = haigused_df.columns.str.strip().str.replace("\xa0", "", regex=False)
 
-# --- ANDMETE ETTEVALMISTUS ---
+# --- ETTEVALMISTUS ---
 vakts_df["Maakond"] = vakts_df["Maakond"].str.strip()
 haigused_df["Maakond"] = haigused_df["Maakond"].str.strip()
 
@@ -20,30 +20,27 @@ vakts_df["Aasta"] = pd.to_numeric(vakts_df["Aasta"], errors="coerce")
 haigused_df["Aasta"] = pd.to_numeric(haigused_df["Aasta"], errors="coerce")
 
 aastad = sorted(vakts_df["Aasta"].dropna().unique().astype(int))
-
 maakond_gdf["NIMI"] = maakond_gdf["MNIMI"].str.strip()
 combined_gdf = maakond_gdf.copy()
 
-# --- VALIKUD ---
-maakonnad = sorted(
-    set(vakts_df["Maakond"].dropna()).union(set(haigused_df["Maakond"].dropna()))
-)
-maakonna_valikud = [m for m in maakonnad if m != "Eesti kokku"]
+# --- LEIA ÜHISED HAIUSED JA ANDMETE OLEMASOLU ---
+haigused_kandidaadid = sorted(set(vakts_df.columns).intersection(haigused_df.columns) - {"Aasta", "Maakond"})
 
-# ✅ Ainult veerud, mis on mõlemas olemas
-haigused = sorted(
-    set(vakts_df.columns).intersection(haigused_df.columns) - {"Aasta", "Maakond"}
-)
-
-# --- 🧪 ANDMETE OLEMASOLU TABEL ---
-st.subheader("🧪 Andmetabelite täidetus haiguste lõikes")
-
+# Kontrolltabel
 kontroll_df = pd.DataFrame(columns=["Haigus", "Vaktsineerimine (täidetud)", "Haigestumine (täidetud)"])
-for haigus in haigused:
+for haigus in haigused_kandidaadid:
     vakts_count = vakts_df[haigus].dropna().shape[0]
     haigus_count = haigused_df[haigus].dropna().shape[0]
     kontroll_df.loc[len(kontroll_df)] = [haigus, vakts_count, haigus_count]
 
+# --- FILTREERI AINULT HAIUSED, MILLEL ON ANDMED ---
+haigused = kontroll_df[
+    (kontroll_df["Vaktsineerimine (täidetud)"] > 0) &
+    (kontroll_df["Haigestumine (täidetud)"] > 0)
+]["Haigus"].tolist()
+
+# --- KUVA TÄIDETUSE TABEL ---
+st.subheader("🧪 Andmetabelite täidetus haiguste lõikes")
 st.dataframe(kontroll_df.sort_values("Haigus"))
 
 # --- VALIKUD ---
@@ -72,7 +69,6 @@ st.subheader(f"{valitud_haigus} ({valitud_aasta}) vaktsineerimine ja haigestumus
 
 fig, axes = plt.subplots(1, 2, figsize=(20, 10))
 
-# Vaktsineerimise kaart
 geo_merged.plot(
     column="Vaktsineerimine",
     cmap="YlGnBu",
@@ -85,7 +81,6 @@ geo_merged.plot(
 axes[0].set_title("Vaktsineerimise määr")
 axes[0].axis("off")
 
-# Haigestumuse kaart
 geo_merged.plot(
     column="Haigestumus",
     cmap="Reds",
@@ -100,7 +95,7 @@ axes[1].axis("off")
 
 st.pyplot(fig)
 
-# --- KUVA EESTI KOKKU ---
+# --- EESTI KOKKU ---
 st.subheader("🌐 Kogu Eesti kohta")
 
 try:
