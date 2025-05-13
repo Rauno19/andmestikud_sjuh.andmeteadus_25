@@ -28,7 +28,11 @@ maakonnad = sorted(
     set(vakts_df["Maakond"].dropna()).union(set(haigused_df["Maakond"].dropna()))
 )
 maakonna_valikud = [m for m in maakonnad if m != "Eesti kokku"]
-haigused = [col for col in vakts_df.columns if col not in ["Aasta", "Maakond"]]
+
+# ✅ Ainult veerud, mis on mõlemas tabelis
+haigused = sorted(
+    set(vakts_df.columns).intersection(haigused_df.columns) - {"Aasta", "Maakond"}
+)
 
 valitud_aasta = st.sidebar.selectbox("Vali aasta", aastad)
 valitud_haigus = st.sidebar.selectbox("Vali haigus", haigused)
@@ -81,14 +85,4 @@ geo_merged.plot(
 axes[1].set_title("Haigestumus")
 axes[1].axis("off")
 
-st.pyplot(fig)
-
-# --- KUVA EESTI KOKKU ---
-st.subheader("🌐 Kogu Eesti kohta")
-
-vakts_eesti = vakts_df.query("Aasta == @valitud_aasta and Maakond == 'Eesti kokku'")[valitud_haigus].values[0]
-haigus_eesti = haigused_df.query("Aasta == @valitud_aasta and Maakond == 'Eesti kokku'")[valitud_haigus].values[0]
-
-col1, col2 = st.columns(2)
-col1.metric("Vaktsineerimise määr (%)", f"{vakts_eesti}")
-col2.metric("Haigestunute arv", f"{int(haigus_eesti)}")
+st.p
