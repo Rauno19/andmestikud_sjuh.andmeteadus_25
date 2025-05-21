@@ -135,7 +135,7 @@ for i, haigus in enumerate(valitud_haigused):
         st.pyplot(fig_map)
 
  # --- DETAILNE VAADE ---
-        st.markdown(f"#### Detailne vaade valitud maakondadele")
+        st.markdown(f"#### 📍 Detailne vaade valitud maakondadele")
         for mk in valitud_maakonnad:
             st.markdown(f"##### {mk}")
             
@@ -188,7 +188,7 @@ for i, haigus in enumerate(valitud_haigused):
     
 
  # --- KOKKUVÕTLIKUD TULPGRAAFIKUD HAIGUSE kohta ---
-        st.markdown(f"#### Kokkuvõtlikud tulpgraafikud")
+        st.markdown(f"#### 📊 Kokkuvõtlikud tulpdiagrammid")
 
         vakts_data_bar = []
         haigus_data_bar = []
@@ -227,7 +227,7 @@ for i, haigus in enumerate(valitud_haigused):
                 st.info(f"Haigestumuse andmed puuduvad haiguse {haigus} kohta.")
 
 # --- VÕRDLUSDIAGRAMM ---
-        st.markdown(f"#### Vaktsineerimata inimeste ja haigestumuse suhe")
+        st.markdown(f"#### 📉 Vaktsineerimata inimeste ja haigestumuse suhe")
         scatter_df = vakts_df[vakts_df["Aasta"] == valitud_aasta][["Maakond", haigus]].rename(columns={haigus: "Vaktsineerimine"})
         scatter_df = scatter_df.merge(
             haigused_df[haigused_df["Aasta"] == valitud_aasta][["Maakond", haigus]].rename(columns={haigus: "Haigestumus"}),
@@ -241,7 +241,7 @@ for i, haigus in enumerate(valitud_haigused):
         st.plotly_chart(fig3, use_container_width=True)
 
  # --- TRENDIJOON (eelnevad 5 aastat) ---
-        st.markdown(f"#### Trend eelnevad viie aasta kohta)")
+        st.markdown(f"#### 📈 Trend eelneva viie aasta kohta)")
     
         max_vakts_data_year = vakts_df["Aasta"].max() 
 
@@ -295,7 +295,7 @@ for i, haigus in enumerate(valitud_haigused):
         st.plotly_chart(fig_trend, use_container_width=True)
 
  # --- AJALOOLISED JOON- JA TULPGRAAFIKUD ---
-        st.markdown(f"#### Ajaloolised andmed")
+        st.markdown(f"#### 📊 Ajaloolised andmed")
 
         # Optimeerime andmete ettevalmistust
         historical_v_df = vakts_df.query("Aasta <= @valitud_aasta")
