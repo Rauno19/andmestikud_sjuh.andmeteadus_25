@@ -18,9 +18,9 @@ st.markdown("""
 - Võrdle konkreetseid maakondi detailsemalt ning jälgi viimase viie aasta trende.
 - Analüüsi seost vaktsineerimatuse ja haigestumise vahel.
 
-**Mis on hetkel puudu?**
+**Hetkeolukord andmete osas**
 - 2024 ja 2025 vaktsineerimisandmeid ei ole veel avalikustatud.
-- 2025 haigusjuhud on märtsikuu seisuga.
+- 2025 aasta haigusjuhud on märtsikuu seisuga.
 
 Vaktsineerimise ja haigestumuse andmed on pärit Terviseametist ja Tervise Arengu Instituudist.
 """)
