@@ -8,7 +8,22 @@ import plotly.graph_objects as go
 
 # --- SEADISTUS ---
 st.set_page_config(layout="wide")
-st.title("💉 Vaktsineerimine ja haigestumus maakonniti")
+st.title("💉 Väikelaste vaktsineerimine ja vaktsiinidega ennetatavatesse haigustesse haigestumus")
+
+st.markdown("""
+
+💡 **Mida saad teha?**
+- Vali aasta ja haigused, mille andmeid soovid analüüsida.
+- Vaata kaardilt, kui palju lapsi on vaktsineeritud ja kui palju haigestumisi samal perioodil on olnud.
+- Võrdle konkreetseid maakondi detailsemalt ning jälgi viimase viie aasta trende.
+- Analüüsi seost vaktsineerimatuse ja haigestumise vahel.
+
+**Mis on hetkel puudu?**
+- 2024 ja 2025 vaktsineerimisandmeid ei ole veel avalikustatud.
+- 2025 haigusjuhud on märtsikuu seisuga.
+
+Vaktsineerimise ja haigestumuse andmed on pärit Terviseametist ja Tervise Arengu Instituudist.
+""")
 
 # --- LAE ANDMED ---
 @st.cache_data
@@ -76,7 +91,7 @@ for i, haigus in enumerate(valitud_haigused):
         st.header(f"Andmed haiguse kohta: {haigus}")
 
  # --- KAARDID ---
-        st.markdown(f"#### 🗺 Maakonnakaardid ({haigus}, {valitud_aasta})")
+        st.markdown(f"#### Maakonnakaardid")
         vakts = vakts_df.query("Aasta == @valitud_aasta")[["Maakond", haigus]].rename(columns={haigus: "Vaktsineerimine"})
         haig = haigused_df.query("Aasta == @valitud_aasta")[["Maakond", haigus]].rename(columns={haigus: "Haigestumus"})
 
@@ -120,7 +135,7 @@ for i, haigus in enumerate(valitud_haigused):
         st.pyplot(fig_map)
 
  # --- DETAILNE VAADE ---
-        st.markdown(f"#### 📍 Detailne vaade valitud maakondadele ({haigus})")
+        st.markdown(f"#### Detailne vaade valitud maakondadele")
         for mk in valitud_maakonnad:
             st.markdown(f"##### {mk}")
             
@@ -173,7 +188,7 @@ for i, haigus in enumerate(valitud_haigused):
     
 
  # --- KOKKUVÕTLIKUD TULPGRAAFIKUD HAIGUSE kohta ---
-        st.markdown(f"#### 📊 Kokkuvõtlikud tulpgraafikud ({haigus}) – kõik valitud maakonnad")
+        st.markdown(f"#### Kokkuvõtlikud tulpgraafikud")
 
         vakts_data_bar = []
         haigus_data_bar = []
@@ -212,7 +227,7 @@ for i, haigus in enumerate(valitud_haigused):
                 st.info(f"Haigestumuse andmed puuduvad haiguse {haigus} kohta.")
 
 # --- VÕRDLUSDIAGRAMM ---
-        st.markdown(f"#### 📉 Vaktsineerimata vs haigestumus ({haigus})")
+        st.markdown(f"#### Vaktsineerimata inimeste ja haigestumuse suhe")
         scatter_df = vakts_df[vakts_df["Aasta"] == valitud_aasta][["Maakond", haigus]].rename(columns={haigus: "Vaktsineerimine"})
         scatter_df = scatter_df.merge(
             haigused_df[haigused_df["Aasta"] == valitud_aasta][["Maakond", haigus]].rename(columns={haigus: "Haigestumus"}),
@@ -226,7 +241,7 @@ for i, haigus in enumerate(valitud_haigused):
         st.plotly_chart(fig3, use_container_width=True)
 
  # --- TRENDIJOON (eelnevad 5 aastat) ---
-        st.markdown(f"#### 📈 Trend ({haigus}, eelnevad 5 aastat)")
+        st.markdown(f"#### Trend eelnevad viie aasta kohta)")
     
         max_vakts_data_year = vakts_df["Aasta"].max() 
 
@@ -247,9 +262,8 @@ for i, haigus in enumerate(valitud_haigused):
             haigus_ajalugu = haigus_ajalugu[haigus_ajalugu["Haigestumus"] != 0].dropna() # Kuva haigestumise 0, kui need on teadaolevad 0-d
 
             if vakts_ajalugu.empty and haigus_ajalugu.empty:
-                continue # Kui mõlemad on tühjad, ära joonista midagi
+                continue 
 
-            # Joonistame vaktsineerimise joone ainult siis, kui andmeid on
             if not vakts_ajalugu.empty:
                 
                 fig_trend.add_trace(go.Scatter(x=vakts_ajalugu["Aasta"], y=vakts_ajalugu["Vaktsineerimine"], 
@@ -281,7 +295,7 @@ for i, haigus in enumerate(valitud_haigused):
         st.plotly_chart(fig_trend, use_container_width=True)
 
  # --- AJALOOLISED JOON- JA TULPGRAAFIKUD ---
-        st.markdown(f"#### 📊 Ajaloolised andmed – {haigus}")
+        st.markdown(f"#### Ajaloolised andmed")
 
         # Optimeerime andmete ettevalmistust
         historical_v_df = vakts_df.query("Aasta <= @valitud_aasta")
@@ -345,4 +359,3 @@ for i, haigus in enumerate(valitud_haigused):
                 st.pyplot(fig_h)
             else:
                 st.info(f"Haigestumuse ajaloolised andmed puuduvad haiguse {haigus} kohta valitud maakondadele.")
-
