@@ -28,10 +28,10 @@ Vaktsineerimise ja haigestumuse andmed on pärit Terviseametist ja Tervise Areng
 # --- LAE ANDMED ---
 @st.cache_data
 def load_data():
-    vakts_df = pd.read_excel("vaktsineerimine.xlsx")
-    haigused_df = pd.read_excel("Haigused.xlsx")
-    maakond_gdf = gpd.read_file("maakond.json")
-    asustus_gdf = gpd.read_file("asustusyksus.json")
+    vakts_df = pd.read_excel("andmestikud/vaktsineerimine.xlsx")
+    haigused_df = pd.read_excel("andmestikud/Haigused.xlsx")
+    maakond_gdf = gpd.read_file("andmestikud/maakond.json")
+    asustus_gdf = gpd.read_file("andmestikud/asustusyksus.json")
 
     def puhasta(df):
         df.columns = df.columns.str.strip()
