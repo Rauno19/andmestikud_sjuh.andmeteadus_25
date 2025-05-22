@@ -240,52 +240,56 @@ for i, haigus in enumerate(valitud_haigused):
         fig3.update_traces(textposition="top center")
         st.plotly_chart(fig3, use_container_width=True)
 
+#TRENDIJOON
         st.markdown("#### 📈 Trend eelneva viie aasta kohta")
 
-eelnevad_aastad = sorted([a for a in aastad if a < valitud_aasta])[-5:]
-fig_trend = go.Figure()
+for i, haigus in enumerate(valitud_haigused):
+    with tabs[i]:
 
-for haigus in valitud_haigused:
-    for mk_trend in valitud_maakonnad:
-        vakts_ajalugu = vakts_df[(vakts_df["Aasta"].isin(eelnevad_aastad)) & 
-                                 (vakts_df["Maakond"] == mk_trend)][["Aasta", haigus]].rename(columns={haigus: "Vaktsineerimine"})
-        
-        haigus_ajalugu = haigused_df[(haigused_df["Aasta"].isin(eelnevad_aastad)) & 
-                                     (haigused_df["Maakond"] == mk_trend)][["Aasta", haigus]].rename(columns={haigus: "Haigestumus"})
+        eelnevad_aastad = sorted([a for a in aastad if a < valitud_aasta])[-5:]
+        fig_trend = go.Figure()
 
-        vakts_ajalugu = vakts_ajalugu.dropna()
-        haigus_ajalugu = haigus_ajalugu.dropna()
+        for mk_trend in valitud_maakonnad:
+            vakts_ajalugu = vakts_df[(vakts_df["Aasta"].isin(eelnevad_aastad)) & 
+                                     (vakts_df["Maakond"] == mk_trend)][["Aasta", haigus]].rename(columns={haigus: "Vaktsineerimine"})
 
-        if vakts_ajalugu.empty and haigus_ajalugu.empty:
-            continue
+            haigus_ajalugu = haigused_df[(haigused_df["Aasta"].isin(eelnevad_aastad)) & 
+                                         (haigused_df["Maakond"] == mk_trend)][["Aasta", haigus]].rename(columns={haigus: "Haigestumus"})
 
-        if not vakts_ajalugu.empty:
-            fig_trend.add_trace(go.Scatter(
-                x=vakts_ajalugu["Aasta"], y=vakts_ajalugu["Vaktsineerimine"],
-                mode="lines+markers",
-                name=f"{mk_trend} – {haigus} – Vakts",
-                yaxis="y1"
-            ))
+            vakts_ajalugu = vakts_ajalugu.dropna()
+            haigus_ajalugu = haigus_ajalugu.dropna()
 
-        if not haigus_ajalugu.empty:
-            fig_trend.add_trace(go.Scatter(
-                x=haigus_ajalugu["Aasta"], y=haigus_ajalugu["Haigestumus"],
-                mode="lines+markers",
-                name=f"{mk_trend} – {haigus} – Haigus",
-                yaxis="y2"
-            ))
+            if vakts_ajalugu.empty and haigus_ajalugu.empty:
+                continue
 
-fig_trend.update_layout(
-    xaxis=dict(title="Aasta", tickmode="linear"),
-    yaxis=dict(title="Vaktsineerimine (%)", range=[0, 100], side="left"),
-    yaxis2=dict(title="Haigestumus (arv)", overlaying="y", side="right"),
-    title="Vaktsineerimise ja haigestumise trend (eelnevad 5 aastat)",
-    legend=dict(orientation="h", yanchor="bottom", y=-0.3, xanchor="center", x=0.5),
-    margin=dict(l=40, r=40, t=30, b=80),
-    hovermode="x unified"
-)
+            if not vakts_ajalugu.empty:
+                fig_trend.add_trace(go.Scatter(
+                    x=vakts_ajalugu["Aasta"], y=vakts_ajalugu["Vaktsineerimine"],
+                    mode="lines+markers",
+                    name=f"{mk_trend} – Vakts",
+                    yaxis="y1"
+                ))
 
-st.plotly_chart(fig_trend, use_container_width=True)
+            if not haigus_ajalugu.empty:
+                fig_trend.add_trace(go.Scatter(
+                    x=haigus_ajalugu["Aasta"], y=haigus_ajalugu["Haigestumus"],
+                    mode="lines+markers",
+                    name=f"{mk_trend} – Haigus",
+                    yaxis="y2"
+                ))
+
+        fig_trend.update_layout(
+            xaxis=dict(title="Aasta", tickmode="linear"),
+            yaxis=dict(title="Vaktsineerimine (%)", range=[0, 100], side="left"),
+            yaxis2=dict(title="Haigestumus (arv)", overlaying="y", side="right"),
+            legend=dict(orientation="h", yanchor="bottom", y=-0.3, xanchor="center", x=0.5),
+            title=f"{haigus} – viimase 5 aasta trend maakonniti",
+            margin=dict(l=40, r=40, t=30, b=80),
+            hovermode="x unified"
+        )
+
+        st.plotly_chart(fig_trend, use_container_width=True)
+
 
  # --- AJALOOLISED JOON- JA TULPGRAAFIKUD ---
 st.markdown(f"#### 📊 Ajaloolised andmed")
