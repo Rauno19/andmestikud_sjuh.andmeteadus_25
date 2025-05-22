@@ -283,7 +283,7 @@ for i, haigus in enumerate(valitud_haigused):
             yaxis=dict(title="Vaktsineerimine (%)", range=[0, 100], side="left"),
             yaxis2=dict(title="Haigestumus (arv)", overlaying="y", side="right"),
             legend=dict(orientation="h", yanchor="bottom", y=-0.3, xanchor="center", x=0.5),
-            title=f"{haigus} – viimase 5 aasta trend maakonniti",
+            title=f"{haigus} – viimase 5 aasta trend",
             margin=dict(l=40, r=40, t=30, b=80),
             hovermode="x unified"
         )
