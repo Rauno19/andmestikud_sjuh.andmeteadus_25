@@ -18,9 +18,9 @@ st.markdown("""
 - Võrdle konkreetseid maakondi detailsemalt ning jälgi viimase viie aasta trende.
 - Analüüsi seost vaktsineerimatuse ja haigestumise vahel.
 
-**Hetkeolukord andmete osas**
+**Mis on hetkel puudu?**
 - 2024 ja 2025 vaktsineerimisandmeid ei ole veel avalikustatud.
-- 2025 aasta haigusjuhud on märtsikuu seisuga.
+- 2025 haigusjuhud on märtsikuu seisuga.
 
 Vaktsineerimise ja haigestumuse andmed on pärit Terviseametist ja Tervise Arengu Instituudist.
 """)
@@ -28,10 +28,10 @@ Vaktsineerimise ja haigestumuse andmed on pärit Terviseametist ja Tervise Areng
 # --- LAE ANDMED ---
 @st.cache_data
 def load_data():
-    vakts_df = pd.read_excel("andmestikud/vaktsineerimine.xlsx")
-    haigused_df = pd.read_excel("andmestikud/Haigused.xlsx")
-    maakond_gdf = gpd.read_file("andmestikud/maakond.json")
-    asustus_gdf = gpd.read_file("andmestikud/asustusyksus.json")
+    vakts_df = pd.read_excel("vaktsineerimine.xlsx")
+    haigused_df = pd.read_excel("Haigused.xlsx")
+    maakond_gdf = gpd.read_file("maakond.json")
+    asustus_gdf = gpd.read_file("asustusyksus.json")
 
     def puhasta(df):
         df.columns = df.columns.str.strip()
@@ -240,71 +240,64 @@ for i, haigus in enumerate(valitud_haigused):
         fig3.update_traces(textposition="top center")
         st.plotly_chart(fig3, use_container_width=True)
 
- # --- TRENDIJOON (eelnevad 5 aastat) ---
-        st.markdown(f"#### 📈 Trend eelneva viie aasta kohta)")
-    
-        max_vakts_data_year = vakts_df["Aasta"].max() 
+        st.markdown("#### 📈 Trend eelneva viie aasta kohta")
 
-        eelnevad_aastad_vakts = sorted([a for a in aastad if a <= max_vakts_data_year and a >= max(1, valitud_aasta - 4)])
-        eelnevad_aastad_haigus = sorted([a for a in aastad if a <= valitud_aasta and a >= max(1, valitud_aasta - 4)])
+eelnevad_aastad = sorted([a for a in aastad if a < valitud_aasta])[-5:]
+fig_trend = go.Figure()
+
+for haigus in valitud_haigused:
+    for mk_trend in valitud_maakonnad:
+        vakts_ajalugu = vakts_df[(vakts_df["Aasta"].isin(eelnevad_aastad)) & 
+                                 (vakts_df["Maakond"] == mk_trend)][["Aasta", haigus]].rename(columns={haigus: "Vaktsineerimine"})
         
-        fig_trend = go.Figure()
+        haigus_ajalugu = haigused_df[(haigused_df["Aasta"].isin(eelnevad_aastad)) & 
+                                     (haigused_df["Maakond"] == mk_trend)][["Aasta", haigus]].rename(columns={haigus: "Haigestumus"})
 
-        for mk_trend in valitud_maakonnad:
-            # Vaktsineerimise ajalugu, filtreeritud kuni max_vakts_data_year
-            vakts_ajalugu = vakts_df[(vakts_df["Aasta"].isin(eelnevad_aastad_vakts)) & (vakts_df["Maakond"] == mk_trend)][["Aasta", haigus]].rename(columns={haigus: "Vaktsineerimine"})
-            
-            # Haiguse ajalugu, kuni valitud_aasta
-            haigus_ajalugu = haigused_df[(haigused_df["Aasta"].isin(eelnevad_aastad_haigus)) & (haigused_df["Maakond"] == mk_trend)][["Aasta", haigus]].rename(columns={haigus: "Haigestumus"})
+        vakts_ajalugu = vakts_ajalugu.dropna()
+        haigus_ajalugu = haigus_ajalugu.dropna()
 
-            # Eemaldame read, kus tegelik vaktsineerimise väärtus on 0 (eeldame, et see tähendab "andmed puuduvad" selles kontekstis)
-            vakts_ajalugu = vakts_ajalugu[vakts_ajalugu["Vaktsineerimine"] != 0].dropna()
-            haigus_ajalugu = haigus_ajalugu[haigus_ajalugu["Haigestumus"] != 0].dropna() # Kuva haigestumise 0, kui need on teadaolevad 0-d
+        if vakts_ajalugu.empty and haigus_ajalugu.empty:
+            continue
 
-            if vakts_ajalugu.empty and haigus_ajalugu.empty:
-                continue 
+        if not vakts_ajalugu.empty:
+            fig_trend.add_trace(go.Scatter(
+                x=vakts_ajalugu["Aasta"], y=vakts_ajalugu["Vaktsineerimine"],
+                mode="lines+markers",
+                name=f"{mk_trend} – {haigus} – Vakts",
+                yaxis="y1"
+            ))
 
-            if not vakts_ajalugu.empty:
-                
-                fig_trend.add_trace(go.Scatter(x=vakts_ajalugu["Aasta"], y=vakts_ajalugu["Vaktsineerimine"], 
-                                                mode="lines+markers", name=f"{mk_trend} – Vakts", yaxis="y1"))
-            
-            # Joonistame haigestumise joone alati, kui andmeid on
-            if not haigus_ajalugu.empty:
-                fig_trend.add_trace(go.Scatter(x=haigus_ajalugu["Aasta"], y=haigus_ajalugu["Haigestumus"], 
-                                                mode="lines+markers", name=f"{mk_trend} – Haigus", yaxis="y2"))
+        if not haigus_ajalugu.empty:
+            fig_trend.add_trace(go.Scatter(
+                x=haigus_ajalugu["Aasta"], y=haigus_ajalugu["Haigestumus"],
+                mode="lines+markers",
+                name=f"{mk_trend} – {haigus} – Haigus",
+                yaxis="y2"
+            ))
 
-        fig_trend.update_layout(
-            xaxis=dict(title="Aasta", tickmode="linear"),
-            yaxis=dict(title="Vaktsineerimine (%)", range=[0, 100], side="left"),
-            yaxis2=dict(title="Haigestumus (arv)", overlaying="y", side="right"),
-            title=f"Vaktsineerimise ja haigestumuse trend ({haigus})",
-            legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=-0.3,
-                xanchor="center",
-                x=0.5,
-                traceorder="normal",
-                bgcolor="rgba(0,0,0,0)",
-                bordercolor="rgba(0,0,0,0)"
-            ),
-            margin=dict(l=40, r=40, t=30, b=80),
-            hovermode="x unified",
-        )
-        st.plotly_chart(fig_trend, use_container_width=True)
+fig_trend.update_layout(
+    xaxis=dict(title="Aasta", tickmode="linear"),
+    yaxis=dict(title="Vaktsineerimine (%)", range=[0, 100], side="left"),
+    yaxis2=dict(title="Haigestumus (arv)", overlaying="y", side="right"),
+    title="Vaktsineerimise ja haigestumise trend (eelnevad 5 aastat)",
+    legend=dict(orientation="h", yanchor="bottom", y=-0.3, xanchor="center", x=0.5),
+    margin=dict(l=40, r=40, t=30, b=80),
+    hovermode="x unified"
+)
+
+st.plotly_chart(fig_trend, use_container_width=True)
 
  # --- AJALOOLISED JOON- JA TULPGRAAFIKUD ---
-        st.markdown(f"#### 📊 Ajaloolised andmed")
+st.markdown(f"#### 📊 Ajaloolised andmed")
 
         # Optimeerime andmete ettevalmistust
-        historical_v_df = vakts_df.query("Aasta <= @valitud_aasta")
-        historical_h_df = haigused_df
+historical_v_df = vakts_df.query("Aasta <= @valitud_aasta")
+historical_h_df = haigused_df
 
-        col1_hist, col2_hist = st.columns(2)
+col1_hist, col2_hist = st.columns(2)
 
         # Vaktsineerimine ajalugu (joon)
-        with col1_hist:
+with col1_hist:
             st.write("**Vaktsineerimise määr (%)**")
             fig_v, ax_v = plt.subplots(figsize=(5, 3))
             found_data = False
@@ -333,7 +326,7 @@ for i, haigus in enumerate(valitud_haigused):
                 st.info(f"Vaktsineerimise ajaloolised andmed puuduvad haiguse {haigus} kohta valitud maakondadele.")
 
         # Haigestumus ajalugu (joon)
-        with col2_hist:
+with col2_hist:
             st.write("**Haigestumus (juhtumid)**")
             fig_h, ax_h = plt.subplots(figsize=(5, 3))
             found_data = False
@@ -359,3 +352,4 @@ for i, haigus in enumerate(valitud_haigused):
                 st.pyplot(fig_h)
             else:
                 st.info(f"Haigestumuse ajaloolised andmed puuduvad haiguse {haigus} kohta valitud maakondadele.")
+
