@@ -19,7 +19,7 @@ st.markdown("""
 - Analüüsi seost vaktsineerimatuse ja haigestumise vahel.
 
 **Mis on hetkel puudu?**
-- 2024 ja 2025 vaktsineerimisandmeid ei ole veel avalikustatud.
+- 2025 vaktsineerimisandmeid ei ole veel avalikustatud.
 - 2025 haigusjuhud on märtsikuu seisuga.
 
 Vaktsineerimise ja haigestumuse andmed on pärit Terviseametist ja Tervise Arengu Instituudist.
@@ -150,7 +150,7 @@ for i, haigus in enumerate(valitud_haigused):
                         st.metric(label=f"Haigestunute arv", value=f"{int(ha_val)}")
                         
                         # Vaktsineerimise puhul tinglik kuvamine: number või tekst väiksema fondiga
-                        if valitud_aasta >= 2024 and va_val == 0:
+                        if valitud_aasta >= 2025 and va_val == 0:
                             st.markdown(f"<p style='font-size: 0.8em; margin-bottom: 0;'>Vaktsineerimise määr (%):</p><p style='font-size: 0.9em; font-weight: bold; color: #ff4b4b; margin-top: 0;'>Selle aasta kohta andmed puuduvad.</p>", unsafe_allow_html=True)
                         else:
                             st.metric(label=f"Vaktsineerimise määr (%)", value=f"{va_val}")
@@ -178,7 +178,7 @@ for i, haigus in enumerate(valitud_haigused):
                         st.metric(label=f"Haigestunute arv", value=f"{int(ha_val)}")
                         
                         # Vaktsineerimise puhul tinglik kuvamine: number või tekst väiksema fondiga
-                        if valitud_aasta >= 2024 and va_val == 0:
+                        if valitud_aasta >= 2025 and va_val == 0:
                             st.markdown(f"<p style='font-size: 0.8em; margin-bottom: 0;'>Vaktsineerimise määr (%):</p><p style='font-size: 0.9em; font-weight: bold; color: #ff4b4b; margin-top: 0;'>Selle aasta kohta andmed puuduvad.</p>", unsafe_allow_html=True)
                         else:
                             st.metric(label=f"Vaktsineerimise määr (%)", value=f"{va_val}")
