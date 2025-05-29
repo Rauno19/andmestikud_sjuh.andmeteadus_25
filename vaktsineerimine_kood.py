@@ -6,6 +6,9 @@ import matplotlib.ticker as ticker
 import plotly.express as px
 import plotly.graph_objects as go
 
+st.cache_data.clear()  # või st.cache.clear()
+
+
 # --- SEADISTUS ---
 st.set_page_config(layout="wide")
 st.title("💉 Väikelaste vaktsineerimine ja vaktsiinidega ennetatavatesse haigustesse haigestumus")
